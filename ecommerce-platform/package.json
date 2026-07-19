@@ -2,11 +2,11 @@
   "name": "ecommerce-platform",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "build": "corepack pnpm exec turbo run build",
+    "dev": "corepack pnpm exec turbo run dev",
+    "lint": "corepack pnpm exec turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "check-types": "corepack pnpm exec turbo run check-types"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
