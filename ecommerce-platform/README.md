@@ -1,159 +1,58 @@
-# Turborepo starter
+# Enterprise Commerce Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+Production-ready monorepo foundation for a full stack e-commerce platform built with pnpm workspaces and Turborepo.
 
-## Using this example
+## Workspace
 
-Run the following command:
+- `apps/web` - Next.js 16 storefront shell with Tailwind CSS and Zustand
+- `apps/api` - Express.js API with TypeScript, Zod validation, and clean architecture boundaries
+- `packages/ui` - reusable UI primitives shared across applications
+- `packages/eslint-config` - shared ESLint presets
+- `packages/typescript-config` - shared TypeScript configuration
 
-```sh
-npx create-turbo@latest
+## Principles
+
+- TypeScript-first implementation
+- modular features and reusable components
+- service and repository patterns for backend features
+- no business logic in routes
+- validation-first request boundaries
+- workspace-wide lint, build, and type-check tasks
+
+## Commands
+
+Run all commands from the workspace root:
+
+```bash
+corepack pnpm install
+corepack pnpm dev
+corepack pnpm lint
+corepack pnpm check-types
+corepack pnpm build
 ```
 
-## What's inside?
+## Current foundation
 
-This Turborepo includes the following packages/apps:
+### Web
 
-### Apps and Packages
+- enterprise storefront landing shell
+- Tailwind CSS setup
+- Zustand-powered capability filtering
+- shared UI primitives from `@repo/ui`
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### API
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- versioned REST routing under `/api/v1`
+- modular health feature with controller, service, repository, and validation
+- centralized error and not-found middleware
+- typed environment configuration
+- graceful shutdown handling
 
-### Utilities
+## Next feature modules
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- authentication with JWT, refresh tokens, and RBAC
+- catalog, inventory, cart, checkout, and orders
+- Prisma repositories for PostgreSQL
+- Redis caching
+- payment, storage, email, and notification adapters
+- Jest, Supertest, and Playwright test coverage

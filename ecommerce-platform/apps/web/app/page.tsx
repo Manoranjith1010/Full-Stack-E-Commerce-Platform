@@ -1,102 +1,128 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
-
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+import Link from "next/link";
+import { Badge } from "@repo/ui/badge";
+import { Card } from "@repo/ui/card";
+import { CapabilityBoard } from "../components/capability-board";
+import { StageTimeline } from "../components/stage-timeline";
+import {
+  architectureLayers,
+  deliveryPrinciples,
+  platformMetrics,
+} from "../lib/platform-content";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 px-6 py-8 sm:px-10 lg:px-12">
+      <section className="grid gap-6 rounded-[2rem] border border-slate-800 bg-slate-950/70 p-8 shadow-2xl shadow-slate-950/30 lg:grid-cols-[1.4fr_0.9fr] lg:p-10">
+        <div className="space-y-6">
+          <Badge tone="accent">Enterprise storefront foundation</Badge>
+          <div className="space-y-4">
+            <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              Full stack e-commerce architecture built for scale,
+              security, and reusable delivery.
+            </h1>
+            <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+              This workspace now starts from a clean monorepo
+              foundation with a modular Next.js frontend, an
+              Express API organized around services and
+              repositories, and workspace tooling aligned to pnpm
+              and Turborepo.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="http://localhost:5000/api/v1/health"
+              className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-white"
+            >
+              View API health endpoint
+            </Link>
+            <Link
+              href="#capabilities"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:bg-slate-800"
+            >
+              Explore platform capabilities
+            </Link>
+          </div>
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
-      </footer>
-    </div>
+
+        <Card tone="accent" className="space-y-5">
+          <div className="space-y-2">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-cyan-200">
+              Delivery standards
+            </p>
+            <h2 className="text-2xl font-semibold text-white">
+              Platform guardrails
+            </h2>
+          </div>
+          <ul className="space-y-3 text-sm leading-6 text-slate-200">
+            {deliveryPrinciples.map((principle) => (
+              <li
+                key={principle}
+                className="rounded-2xl border border-cyan-500/20 bg-slate-950/60 px-4 py-3"
+              >
+                {principle}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-3">
+        {platformMetrics.map((metric) => (
+          <Card key={metric.label} className="space-y-2">
+            <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+              {metric.label}
+            </p>
+            <p className="text-3xl font-semibold text-white">
+              {metric.value}
+            </p>
+            <p className="text-sm leading-6 text-slate-300">
+              {metric.description}
+            </p>
+          </Card>
+        ))}
+      </section>
+
+      <section className="space-y-5">
+        <div className="space-y-2">
+          <Badge>Clean architecture mapping</Badge>
+          <h2 className="text-3xl font-semibold tracking-tight text-white">
+            Layered for maintainability
+          </h2>
+          <p className="max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">
+            Each layer has a single responsibility so features can
+            evolve independently without leaking business logic
+            into framework entry points.
+          </p>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          {architectureLayers.map((layer) => (
+            <Card key={layer.title} className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+                  {layer.subtitle}
+                </p>
+                <h3 className="text-xl font-semibold text-white">
+                  {layer.title}
+                </h3>
+                <p className="text-sm leading-6 text-slate-300">
+                  {layer.description}
+                </p>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-200">
+                {layer.items.map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="mt-1 text-cyan-300">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <CapabilityBoard />
+      <StageTimeline />
+    </main>
   );
 }
