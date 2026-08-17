@@ -20,4 +20,24 @@ export const authRepository = {
       },
     });
   },
+
+  createRefreshToken(data: { tokenHash: string; userId: string; expiresAt: Date }) {
+    return prisma.refreshToken.create({
+      data,
+    });
+  },
+
+  findRefreshToken(tokenHash: string) {
+    return prisma.refreshToken.findFirst({
+      where: { tokenHash },
+      include: { user: true },
+    });
+  },
+
+  revokeRefreshToken(id: string) {
+    return prisma.refreshToken.update({
+      where: { id },
+      data: { revokedAt: new Date() },
+    });
+  },
 };
