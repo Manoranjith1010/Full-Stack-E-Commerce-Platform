@@ -102,4 +102,32 @@ export const authController = {
       next(error);
     }
   },
+
+  async getProfile(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.user) {
+        const err = new Error("Authentication required");
+        (err as Error & { statusCode?: number }).statusCode = 401;
+        throw err;
+      }
+
+      res.status(200).json({
+        success: true,
+        data: {
+          id: req.user.id,
+          role: req.user.role,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async adminOnly(_req: Request, res: Response, next: NextFunction) {
+    try {
+      res.status(200).json({ success: true, message: "Admin access granted" });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
