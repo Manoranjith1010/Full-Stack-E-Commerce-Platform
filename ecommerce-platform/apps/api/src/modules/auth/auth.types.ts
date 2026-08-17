@@ -6,6 +6,11 @@ export type RegisterInput = {
   password: string;
 };
 
+export type LoginInput = {
+  email: string;
+  password: string;
+};
+
 export type AuthUser = {
   id: string;
   name: string;
@@ -13,4 +18,9 @@ export type AuthUser = {
   role: Role;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
 };
