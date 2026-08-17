@@ -33,10 +33,11 @@ model User {
 
 model RefreshToken {
   id        String   @id @default(cuid())
-  token     String   @unique
+  tokenHash String   @unique
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
+  revokedAt DateTime?
   createdAt DateTime @default(now())
 }
 
