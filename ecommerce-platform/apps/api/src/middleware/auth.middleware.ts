@@ -1,39 +1,66 @@
-import { NextFunction, Request, Response } from "express";
-import { jwtService } from "../modules/auth/jwt.service";
+import { NextFunction, Response } from "express";
+import jwt from "jsonwebtoken";
+import { Role } from "@prisma/client";
 
-export function authenticate(req: Request, _res: Response, next: NextFunction) {
+import { env } from "../config/env";
+import { AuthenticatedRequest } from "../types/auth.types";
+
+interface AccessTokenPayload {
+	sub: string;
+	role: Role;
+	type?: string;
+}
+
+export function authenticate(req: AuthenticatedRequest, res: Response, next: NextFunction) {
 	try {
-		const authHeader = req.headers.authorization;
+		const authorization = req.headers.authorization;
 
-		if (!authHeader) {
-			const err = new Error("Authorization header is required") as Error & {
-				statusCode?: number;
-			};
-			err.statusCode = 401;
-			throw err;
+		if (!authorization) {
+			res.status(401).json({
+				success: false,
+				message: "Authentication required",
+			});
+			return;
 		}
 
-		const [scheme, token] = authHeader.split(" ");
+		const [scheme, token] = authorization.split(" ");
+
 		if (scheme !== "Bearer" || !token) {
-			const err = new Error("Invalid authorization header format") as Error & {
-				statusCode?: number;
-			};
-			err.statusCode = 401;
-			throw err;
+			res.status(401).json({
+				success: false,
+				message: "Invalid authorization header",
+			});
+			return;
 		}
 
-		const payload = jwtService.verifyAccessToken(token);
+		const decoded = jwt.verify(token, env.ACCESS_TOKEN_SECRET) as AccessTokenPayload;
+
+		if (!decoded.sub || !decoded.role) {
+			res.status(401).json({
+				success: false,
+				message: "Invalid access token",
+			});
+			return;
+		}
+
+		if (decoded.role !== Role.ADMIN && decoded.role !== Role.CUSTOMER) {
+			res.status(401).json({
+				success: false,
+				message: "Invalid user role",
+			});
+			return;
+		}
+
 		req.user = {
-			id: payload.sub,
-			role: payload.role,
+			id: decoded.sub,
+			role: decoded.role,
 		};
 
 		next();
-	} catch (_error) {
-		const err = new Error("Invalid or expired access token") as Error & {
-			statusCode?: number;
-		};
-		err.statusCode = 401;
-		next(err);
+	} catch {
+		res.status(401).json({
+			success: false,
+			message: "Invalid or expired access token",
+		});
 	}
 }

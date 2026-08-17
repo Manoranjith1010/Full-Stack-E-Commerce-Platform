@@ -1,20 +1,26 @@
+import { NextFunction, Response } from "express";
 import { Role } from "@prisma/client";
-import { NextFunction, Request, Response } from "express";
+
+import { AuthenticatedRequest } from "../types/auth.types";
 
 export function authorize(...allowedRoles: Role[]) {
-  return (req: Request, _res: Response, next: NextFunction) => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.user) {
-      const err = new Error("Authentication required") as Error & { statusCode?: number };
-      err.statusCode = 401;
-      return next(err);
+      res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+      return;
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      const err = new Error("Forbidden") as Error & { statusCode?: number };
-      err.statusCode = 403;
-      return next(err);
+      res.status(403).json({
+        success: false,
+        message: "You do not have permission to perform this action",
+      });
+      return;
     }
 
-    return next();
+    next();
   };
 }

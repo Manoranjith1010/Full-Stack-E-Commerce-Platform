@@ -41,4 +41,49 @@ export const productRepository = {
       },
     });
   },
+
+  create(data: {
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    categoryId: string;
+    brandId: string;
+  }) {
+    return prisma.product.create({
+      data,
+      include: {
+        category: true,
+        brand: true,
+      },
+    });
+  },
+
+  update(
+    id: string,
+    data: Partial<{
+      name: string;
+      slug: string;
+      description: string;
+      price: number;
+      categoryId: string;
+      brandId: string;
+      isActive: boolean;
+    }>
+  ) {
+    return prisma.product.update({
+      where: { id },
+      data,
+      include: {
+        category: true,
+        brand: true,
+      },
+    });
+  },
+
+  delete(id: string) {
+    return prisma.product.delete({
+      where: { id },
+    });
+  },
 };
