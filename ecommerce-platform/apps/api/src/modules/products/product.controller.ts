@@ -13,7 +13,8 @@ export const productController = {
 
   async getProductById(req: Request, res: Response, next: NextFunction) {
     try {
-      const product = await productService.getProductById(req.params.id);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const product = await productService.getProductById(id);
       res.status(200).json({ success: true, data: product });
     } catch (error) {
       next(error);
@@ -22,7 +23,8 @@ export const productController = {
 
   async getProductBySlug(req: Request, res: Response, next: NextFunction) {
     try {
-      const product = await productService.getProductBySlug(req.params.slug);
+      const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
+      const product = await productService.getProductBySlug(slug);
       res.status(200).json({ success: true, data: product });
     } catch (error) {
       next(error);
