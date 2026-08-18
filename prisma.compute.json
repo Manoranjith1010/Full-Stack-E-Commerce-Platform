@@ -1,0 +1,36 @@
+{
+  "region": "ap-southeast-1",
+  "apps": {
+    "apps": {
+      "name": "apps",
+      "root": "ecommerce-platform/apps",
+      "framework": "bun",
+      "entry": ".app",
+      "httpPort": 3000,
+      "build": {
+        "command": null,
+        "outputDirectory": "."
+      }
+    },
+    "api": {
+      "name": "api",
+      "root": "ecommerce-platform/apps/api",
+      "framework": "bun",
+      "entry": "src/server.ts",
+      "httpPort": 3000,
+      "build": {
+        "command": "pnpm run build",
+        "outputDirectory": "."
+      }
+    },
+    "web": {
+      "name": "web",
+      "root": "ecommerce-platform/apps/web",
+      "framework": "nextjs",
+      "httpPort": 3000,
+      "build": {
+        "command": "pnpm run build"
+      }
+    }
+  }
+}
