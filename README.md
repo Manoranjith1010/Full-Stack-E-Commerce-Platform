@@ -1,159 +1,83 @@
-# Turborepo starter
-
-This Turborepo starter is maintained by the Turborepo core team.
-
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+Full-Stack E-Commerce Platform
+A Turborepo monorepo for an e-commerce platform, with an Express + Prisma API
+and a Next.js frontend. This project is under active development — see
+Project Status below for what's actually built vs. planned.
+Stack
+API (apps/api): Express, TypeScript, Prisma 7, PostgreSQL, JWT auth, bcrypt
+Web (apps/web): Next.js 16, React 19, TypeScript
+Tooling: Turborepo, pnpm workspaces, ESLint, Prettier
+Project Status
+Backend (apps/api)
+Module
+Status
+auth
+✅ Implemented — register, login, refresh, logout (JWT + hashed refresh tokens)
+products
+✅ Implemented — list, get by id, get by slug
+cart
+❌ Not started
+categories
+❌ Not started
+orders
+❌ Not started
+payments
+❌ Not started
+reviews
+❌ Not started
+users
+❌ Not started
+The Prisma schema (apps/api/prisma/schema.prisma) already models the full
+domain — users, addresses, categories, brands, products, variants, inventory,
+cart, wishlist, orders, order items, payments, reviews, coupons — ahead of the
+API routes that expose it. Building out a new module means adding a
+*.routes.ts / *.controller.ts / *.service.ts / *.repository.ts set
+following the pattern in modules/products.
+Frontend (apps/web)
+Currently the default Next.js starter page — no product listing, cart,
+checkout, or auth UI has been built yet, and it isn't wired up to the API.
+Getting Started
+Prerequisites
+Node.js >= 18
+pnpm 9
+A PostgreSQL database (local or hosted, e.g. Neon/Supabase/Railway)
+Setup
+Bash
+Create apps/api/.env (see apps/api/.env.example):
+Bash
+Important: ACCESS_TOKEN_SECRET currently falls back to a hardcoded
+dev value if unset. Always set a real secret, especially outside local dev.
+Run migrations and generate the Prisma client:
+Bash
+Running locally
+From the repo root, run everything via Turborepo:
+Bash
+Or run each app individually:
+Bash
+Other useful commands
+Bash
+API Overview
+Base path: /api/v1 (see apps/api/src/app.ts / routes/index.ts)
+Auth — /api/v1/auth
+POST /register
+POST /login
+POST /refresh
+POST /logout
+Products — /api/v1/products
+GET / — list products
+GET /:id — get product by id
+GET /slug/:slug — get product by slug
+Known Issues / Things to Fix Before Production
+cors() is currently configured with no options in app.ts, meaning it
+accepts requests from any origin. Restrict this to your deployed frontend
+origin before going live.
+No CI (tests/lint) currently runs automatically — no .github/workflows yet.
+No automated tests exist for any module yet.
+Contributing / Next Steps
+Priority order for anyone picking this up:
+Wire the frontend to the auth and products APIs (real login/product pages).
+Implement cart module (schema already supports it).
+Implement orders and payments.
+Implement categories, reviews, users (profile management).
+Add tests and CI.
+License
+Not yet specified.
