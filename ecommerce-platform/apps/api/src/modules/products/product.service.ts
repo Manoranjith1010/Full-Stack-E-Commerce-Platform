@@ -1,4 +1,5 @@
 import { productRepository } from "./product.repository";
+import { AppError } from "../../utils/app-error";
 
 export const productService = {
   async getProducts() {
@@ -8,9 +9,7 @@ export const productService = {
   async getProductById(id: string) {
     const product = await productRepository.findById(id);
     if (!product) {
-      const err = new Error("Product not found");
-      (err as any).statusCode = 404;
-      throw err;
+      throw new AppError("Product not found", 404);
     }
     return product;
   },
@@ -18,9 +17,7 @@ export const productService = {
   async getProductBySlug(slug: string) {
     const product = await productRepository.findBySlug(slug);
     if (!product) {
-      const err = new Error("Product not found");
-      (err as any).statusCode = 404;
-      throw err;
+      throw new AppError("Product not found", 404);
     }
     return product;
   },
@@ -51,9 +48,7 @@ export const productService = {
     try {
       return await productRepository.update(id, input);
     } catch {
-      const err = new Error("Product not found");
-      (err as any).statusCode = 404;
-      throw err;
+      throw new AppError("Product not found", 404);
     }
   },
 
@@ -61,9 +56,7 @@ export const productService = {
     try {
       await productRepository.delete(id);
     } catch {
-      const err = new Error("Product not found");
-      (err as any).statusCode = 404;
-      throw err;
+      throw new AppError("Product not found", 404);
     }
   },
 };
