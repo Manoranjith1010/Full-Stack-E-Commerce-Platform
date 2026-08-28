@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma";
+import { Role } from "@prisma/client";
 
 export const authRepository = {
   findUserByEmail(email: string) {
@@ -9,7 +10,10 @@ export const authRepository = {
 
   createUser(data: { name: string; email: string; password: string }) {
     return prisma.user.create({
-      data,
+      data: {
+        ...data,
+        role: Role.CUSTOMER,
+      },
       select: {
         id: true,
         name: true,
