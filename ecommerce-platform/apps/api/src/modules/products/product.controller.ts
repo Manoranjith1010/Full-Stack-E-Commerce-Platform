@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { productService } from "./product.service";
+import { CreateProductSchema, UpdateProductSchema } from "./product.schema";
 
 export const productController = {
   async getProducts(_req: Request, res: Response, next: NextFunction) {
@@ -33,30 +34,8 @@ export const productController = {
 
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, slug, description, price, categoryId, brandId } = req.body as {
-        name?: string;
-        slug?: string;
-        description?: string;
-        price?: number;
-        categoryId?: string;
-        brandId?: string;
-      };
-
-      if (!name || !slug || !description || price === undefined || !categoryId || !brandId) {
-        const err = new Error("name, slug, description, price, categoryId and brandId are required");
-        (err as any).statusCode = 400;
-        throw err;
-      }
-
-      const product = await productService.createProduct({
-        name,
-        slug,
-        description,
-        price,
-        categoryId,
-        brandId,
-      });
-
+      const input = req.body as CreateProductSchema;
+      const product = await productService.createProduct(input);
       res.status(201).json({ success: true, data: product });
     } catch (error) {
       next(error);
@@ -66,7 +45,7 @@ export const productController = {
   async updateProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-      const product = await productService.updateProduct(id, req.body);
+      const product = await productService.updateProduct(id, req.body as UpdateProductSchema);
       res.status(200).json({ success: true, data: product });
     } catch (error) {
       next(error);

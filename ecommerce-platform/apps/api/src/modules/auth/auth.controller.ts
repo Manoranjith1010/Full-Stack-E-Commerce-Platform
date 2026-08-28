@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service";
 import { LoginInput, RegisterInput } from "./auth.types";
+import { AppError } from "../../utils/app-error";
 
 const REFRESH_TOKEN_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -13,19 +14,7 @@ const REFRESH_TOKEN_COOKIE_OPTIONS = {
 export const authController = {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, email, password } = req.body as Partial<RegisterInput>;
-
-      if (!name || !email || !password) {
-        const err = new Error("name, email and password are required");
-        (err as Error & { statusCode?: number }).statusCode = 400;
-        throw err;
-      }
-
-      if (password.length < 8) {
-        const err = new Error("Password must be at least 8 characters");
-        (err as Error & { statusCode?: number }).statusCode = 400;
-        throw err;
-      }
+      const { name, email, password } = req.body as RegisterInput;
 
       const user = await authService.register({ name, email, password });
       res.status(201).json({ success: true, data: user });
@@ -36,13 +25,7 @@ export const authController = {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, password } = req.body as Partial<LoginInput>;
-
-      if (!email || !password) {
-        const err = new Error("email and password are required");
-        (err as Error & { statusCode?: number }).statusCode = 400;
-        throw err;
-      }
+      const { email, password } = req.body as LoginInput;
 
       const tokens = await authService.login({ email, password });
 
@@ -64,7 +47,7 @@ export const authController = {
       const refreshToken = req.cookies.refreshToken as string | undefined;
 
       if (!refreshToken) {
-        return res.status(401).json({ success: false, message: "Refresh token required" });
+        throw new AppError("Refresh token required", 401);
       }
 
       const result = await authService.refreshSession(refreshToken);
@@ -106,9 +89,7 @@ export const authController = {
   async getProfile(req: Request, res: Response, next: NextFunction) {
     try {
       if (!req.user) {
-        const err = new Error("Authentication required");
-        (err as Error & { statusCode?: number }).statusCode = 401;
-        throw err;
+        throw new AppError("Authentication required", 401);
       }
 
       res.status(200).json({

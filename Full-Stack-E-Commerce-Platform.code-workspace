@@ -1,9 +1,7 @@
 {
-	"folders": [
-		{
-			"name": "Full-Stack-E-Commerce-Platform",
-			"path": "."
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": ".claude"
+        }
+    ]
 }
